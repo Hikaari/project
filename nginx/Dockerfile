@@ -1,4 +1,11 @@
-FROM nginx:1.21-alpine
+# Используйте образ Nginx
+FROM nginx:latest
 
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
+# Копируйте файл конфигурации Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Копируйте статические файлы
+COPY data /usr/share/nginx/html
+
+# Откройте порт 80
+EXPOSE 80
