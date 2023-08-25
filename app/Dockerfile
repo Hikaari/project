@@ -1,21 +1,24 @@
-# Используйте базовый образ Python для Django
-FROM python:3.x
+# Use the official Python image as the base image
+FROM python:3.8
 
-# Установите переменную окружения для отключения режима буферизации вывода
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Установите рабочую директорию внутри контейнера
+# Set the working directory in the container
 WORKDIR /app
 
-# Копируйте файлы зависимостей и установите их
+# Copy the requirements file into the container at /app
 COPY requirements.txt /app/
+
+# Install dependencies
 RUN pip install -r requirements.txt
 
-# Копируйте весь проект в рабочую директорию
+# Copy the project files into the container at /app
 COPY . /app/
 
-# Сделайте скрипт entrypoint.sh исполняемым
-RUN chmod +x /app/entrypoint.sh
+# Expose the Django development server port
+EXPOSE 8000
 
-# Запустите entrypoint.sh при запуске контейнера
-ENTRYPOINT ["/app/entrypoint.sh"]
+# Start the Django development server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
